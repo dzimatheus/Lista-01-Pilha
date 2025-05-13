@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_CARROS 10
+
+typedef struct Carro {
+    int placa;
+    int manobras;
+    struct Carro* prox;
+} Carro;
+
+void push(Carro** topo, int placa) {
+    Carro* novo = malloc(sizeof(Carro));
+    novo->placa = placa;
+    novo->manobras = 0;
+    novo->prox = *topo;
+    *topo = novo;
+}
+
+Carro* pop(Carro** topo) {
+    if (*topo == NULL) return NULL;
+    Carro* temp = *topo;
+    *topo = temp->prox;
+    return temp;
+}
+
+int tamanho(Carro* topo) {
+    int cont = 0;
+    while (topo) {
+        cont++;
+        topo = topo->prox;
+    }
+    return cont;
+}
+
+int carro_na_pilha(Carro* topo, int placa) {
+    while (topo) {
+        if (topo->placa == placa)
+            return 1;
+        topo = topo->prox;
+    }
+    return 0;
+}
+
+void entrada(Carro** estacionamento, int placa) {
+    if (tamanho(*estacionamento) >= MAX_CARROS) {
+        printf("Carro %d chegou, mas o estacionamento esta cheio.\n", placa);
+        return;
+    }
+    push(estacionamento, placa);
+    printf("Carro %d entrou no estacionamento.\n", placa);
+}
+
+void saida(Carro** estacionamento, int placa) {
+    Carro* aux = NULL;
+    Carro* carro;
+    int encontrado = 0;
+
+    while (*estacionamento) {
+        carro = pop(estacionamento);
+        if (carro->placa == placa) {
+            encontrado = 1;
+            printf("Carro %d saiu do estacionamento com %d manobras.\n", carro->placa, carro->manobras);
+            free(carro);
+            break;
+        } else {
+            carro->manobras++;
+            push(&aux, carro->placa);
+            aux->manobras = carro->manobras;
+            free(carro);
+        }
+    }
+
+    while (aux) {
+        carro = pop(&aux);
+        push(estacionamento, carro->placa);
+        estacionamento[0]->manobras = carro->manobras;
+        free(carro);
+    }
+
+    if (!encontrado) {
+        printf("Carro %d nao esta no estacionamento.\n", placa);
+    }
+}
+
+int main() {
+    Carro* estacionamento = NULL;
+    char operacao;
+    int placa;
+
+    printf("Digite operacao: entrar(E) ou sair(S) e digite os numeros da placa\n");
+
+    while (scanf(" %c %d", &operacao, &placa) == 2) {
+        if (operacao == 'E') {
+            entrada(&estacionamento, placa);
+        } else if (operacao == 'S') {
+            saida(&estacionamento, placa);
+        } else {
+            printf("Operacao invalida.\n");
+        }
+    }
+
+    return 0;
+}
