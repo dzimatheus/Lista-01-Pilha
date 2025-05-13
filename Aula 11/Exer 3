@@ -1,0 +1,15 @@
+int ehPalindromo(char palavra[]) {
+    PilhaChar p;
+    inicializa(&p);
+    
+    int len = strlen(palavra);
+    for (int i = 0; i < len; i++) {
+        push(&p, palavra[i]);
+    }
+
+    for (int i = 0; i < len; i++) {
+        if (pop(&p) != palavra[i])
+            return 0; // falso
+    }
+    return 1; // verdadeiro
+}
