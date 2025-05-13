@@ -9,7 +9,7 @@ int ehPalindromo(char palavra[]) {
 
     for (int i = 0; i < len; i++) {
         if (pop(&p) != palavra[i])
-            return 0; // falso
+            return 0; 
     }
-    return 1; // verdadeiro
+    return 1; 
 }
