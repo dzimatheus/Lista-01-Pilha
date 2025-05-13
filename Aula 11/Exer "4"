@@ -1,0 +1,17 @@
+void inverterPilha(PilhaChar *p) {
+    PilhaChar temp1, temp2;
+    inicializa(&temp1);
+    inicializa(&temp2);
+
+    while (!vazia(p)) {
+        push(&temp1, pop(p));
+    }
+
+    while (!vazia(&temp1)) {
+        push(&temp2, pop(&temp1));
+    }
+
+    while (!vazia(&temp2)) {
+        push(p, pop(&temp2));
+    }
+}
