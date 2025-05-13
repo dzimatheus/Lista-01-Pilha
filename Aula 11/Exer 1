@@ -1,0 +1,15 @@
+void inverterLetras(char str[]) {
+    PilhaChar p;
+    inicializa(&p);
+    
+    for (int i = 0; i <= strlen(str); i++) {
+        if (str[i] != ' ' && str[i] != '\0') {
+            push(&p, str[i]);
+        } else {
+            while (!vazia(&p))
+                putchar(pop(&p));
+            if (str[i] == ' ') putchar(' ');
+        }
+    }
+    putchar('\n');
+}
