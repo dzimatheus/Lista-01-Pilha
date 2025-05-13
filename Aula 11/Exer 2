@@ -1,0 +1,14 @@
+void copiarPilha(PilhaChar *p1, PilhaChar *p2) {
+    PilhaChar temp;
+    inicializa(&temp);
+
+    while (!vazia(p1)) {
+        push(&temp, pop(p1));
+    }
+
+    while (!vazia(&temp)) {
+        char x = pop(&temp);
+        push(p1, x);  // devolve para p1
+        push(p2, x);  // copia para p2
+    }
+}
