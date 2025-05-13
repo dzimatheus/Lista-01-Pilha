@@ -1,0 +1,69 @@
+void transferir(No** p1, No** p2) {
+    while (!vazia(*p1)) {
+        int x = pop(p1);
+        push(p2, x);
+    }
+}
+
+
+
+int contar_elementos(No* topo) {
+    int cont = 0;
+    while (topo != NULL) {
+        cont++;
+        topo = topo->prox;
+    }
+    return cont;
+}
+
+int p1_maior_que_p2(No* p1, No* p2) {
+    return contar_elementos(p1) > contar_elementos(p2);
+}
+
+
+
+
+void inverter(No** p) {
+    No* aux1 = NULL;
+    No* aux2 = NULL;
+
+    // Passa de P para aux1
+    while (!vazia(*p))
+        push(&aux1, pop(p));
+
+    // Passa de aux1 para aux2
+    while (!vazia(aux1))
+        push(&aux2, pop(&aux1));
+
+    // Passa de aux2 de volta para P (invertida)
+    while (!vazia(aux2))
+        push(p, pop(&aux2));
+}
+
+
+
+int pilhas_iguais(No* p1, No* p2) {
+    No* aux1 = NULL;
+    No* aux2 = NULL;
+    int iguais = 1;
+
+    while (!vazia(p1) && !vazia(p2)) {
+        int x1 = pop(&p1);
+        int x2 = pop(&p2);
+        push(&aux1, x1);
+        push(&aux2, x2);
+        if (x1 != x2)
+            iguais = 0;
+    }
+
+    if (!vazia(p1) || !vazia(p2))
+        iguais = 0;
+
+    // Restaura as pilhas originais
+    while (!vazia(aux1))
+        push(&p1, pop(&aux1));
+    while (!vazia(aux2))
+        push(&p2, pop(&aux2));
+
+    return iguais;
+}
